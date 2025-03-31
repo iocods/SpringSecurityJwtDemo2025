@@ -11,22 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@EnableMethodSecurity
 public class DemoController {
 
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello, Welcome to Oauth2 Resource Server.!";
+        return "Hello, Welcome to Spring security integration with JWT and Redis 2025.!";
     }
 
     @GetMapping("/persons")
-    @PreAuthorize("hasRole('USER')")
-    public List<Person> demo(Authentication authentication) {
-        log.info("Authentication Authorities: {}", authentication.getAuthorities());
-        log.info("Authentication Principal: {}", authentication.getPrincipal().toString());
-        log.info("Authentication Details: {}", authentication.getDetails().toString());
+    public List<Person> demo() {
         Person person = Person.builder().name("John Doe").age(20).email("john@doe.com").build();
         return List.of(person);
     }
