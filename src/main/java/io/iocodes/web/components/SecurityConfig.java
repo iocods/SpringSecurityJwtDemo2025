@@ -12,11 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Value("${jwkSetUri}")
-    private String jwkSetUri;
 
     @Bean
-
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth ->

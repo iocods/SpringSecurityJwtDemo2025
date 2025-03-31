@@ -27,7 +27,7 @@ public class DemoController {
         log.info("Authentication Authorities: {}", authentication.getAuthorities());
         log.info("Authentication Principal: {}", authentication.getPrincipal().toString());
         log.info("Authentication Details: {}", authentication.getDetails().toString());
-        var person = Person.builder().name("John Doe").age(20).email("john@doe.com").build();
+        Person person = Person.builder().name("John Doe").age(20).email("john@doe.com").build();
         return List.of(person);
     }
 
