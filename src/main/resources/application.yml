@@ -9,6 +9,11 @@ spring:
     url: jdbc:h2:mem:testdb
     username:
     password:
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 60000
 rsaPublicKey: >
   MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnpfFQwblHRfSgy40LyR/
   4AdiZiPVUcv4+AWyqz1YntajD2t8GHZo9laxqmCsGnpKC3Qw1qpllLHlc6r5vz7P
