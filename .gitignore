@@ -13,6 +13,7 @@ build/
 .settings
 .springBeans
 .sts4-cache
+*pem
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
