@@ -28,11 +28,14 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username or Password");
     }
 
+    @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         var accessToken = userService.refreshToken(request, response);
-        return ResponseEntity.ok()
-            .header("Authorization", "Bearer " + accessToken)
-            .build();
+        if(accessToken != null)
+            return ResponseEntity.ok()
+                .header("Authorization", "Bearer " + accessToken)
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Refresh Token");
     }
 
     @RequestMapping("/register")

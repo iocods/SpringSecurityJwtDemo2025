@@ -45,7 +45,7 @@ public class JwtService {
     }
 
     public String generateJwtToken(String username) {
-        long expirationDate = System.currentTimeMillis() + (24 * 3600 * 1000);
+        long expirationDate = System.currentTimeMillis() + (5 * 60 * 1000);
         return Jwts
             .builder()
             .header().type("JWT").and()

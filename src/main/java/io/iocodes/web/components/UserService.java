@@ -42,13 +42,16 @@ public class UserService {
     }
     public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
         var refreshTokenCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("refresh_token")).findFirst().orElseThrow();
-        var token = refreshTokenCookie.getValue();
-        if(token != null) {
-            if(jwtService.validateToken(token)) {
-                var username = jwtService.extractSubject(token);
+        var currentRefreshToken = refreshTokenCookie.getValue();
+        if(redisService.hasToken(currentRefreshToken))
+            return null;
+        invalidateToken(currentRefreshToken);
+        if(currentRefreshToken != null) {
+            if(jwtService.validateToken(currentRefreshToken)) {
+                var username = jwtService.extractSubject(currentRefreshToken);
                 String jwtToken = jwtService.generateJwtToken(username);
-                String refreshToken = jwtService.generateRefreshToken(username);
-                refreshTokenCookie = getRefreshTokenCookie(refreshToken);
+                String newRefreshToken = jwtService.generateRefreshToken(username);
+                refreshTokenCookie = getRefreshTokenCookie(newRefreshToken);
                 // Add the cookie to the response
                 response.addCookie(refreshTokenCookie);
                 return jwtToken;
