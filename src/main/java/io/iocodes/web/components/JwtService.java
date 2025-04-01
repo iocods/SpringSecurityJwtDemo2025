@@ -9,7 +9,6 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
@@ -17,6 +16,8 @@ import java.util.Date;
 @Service
 public class JwtService {
 
+    private static final long ACCESS_TOKEN_TTL = 5 * 60 * 1000;
+    private static final long REFRESH_TOKEN_TTL = 7 * 24 * 3600 * 1000;
     @Value("${rsaPrivateKey}")
     private String rsaPrivateKey;
     @Value("${rsaPublicKey}")
@@ -45,25 +46,25 @@ public class JwtService {
     }
 
     public String generateJwtToken(String username) {
-        long expirationDate = System.currentTimeMillis() + (5 * 60 * 1000);
+        long expirationDate = System.currentTimeMillis() + ACCESS_TOKEN_TTL;
         return Jwts
             .builder()
             .header().type("JWT").and()
             .subject(username)
             .claim("type", "access_token")
-            .issuedAt(new Date(System.currentTimeMillis()))
+            .issuedAt(currentDate())
             .expiration(new Date(expirationDate))
             .signWith(generatePrivateKey()).compact();
     }
 
     public String generateRefreshToken(String username) {
-        long expirationDate = System.currentTimeMillis() + (7 * 24 * 3600 * 1000);
+        long expirationDate = System.currentTimeMillis() + REFRESH_TOKEN_TTL;
         return Jwts
            .builder()
             .header().type("JWT").and()
             .subject(username)
             .claim("type", "refresh_token")
-            .issuedAt(new Date(System.currentTimeMillis()))
+            .issuedAt(currentDate())
             .expiration(new Date(expirationDate))
             .signWith(generatePrivateKey()).compact();
     }
@@ -94,5 +95,8 @@ public class JwtService {
 
     public boolean validateToken(String jwtToken) {
         return extractExpiration(jwtToken).after(new Date());
+    }
+    private Date currentDate() {
+        return new Date();
     }
 }

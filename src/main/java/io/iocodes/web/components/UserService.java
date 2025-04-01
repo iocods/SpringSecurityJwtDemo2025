@@ -79,16 +79,22 @@ public class UserService {
 
     private void invalidateToken(String token) {
         long expirationTimeInMilliseconds = jwtService.extractExpiration(token).getTime() - System.currentTimeMillis();
-        if(expirationTimeInMilliseconds > 0)
+        log.info("Invalidating token with remaining : TTL: {} seconds", expirationTimeInMilliseconds);
+        if(expirationTimeInMilliseconds > 0L){
+            log.info("New Access Token Generated Successfully, Invalidating Previous Refresh token");
             redisService.setTokenWithTTL(token, "blacklisted", expirationTimeInMilliseconds, TimeUnit.MILLISECONDS);
+        }
     }
 
     private Cookie getRefreshTokenCookie(String token) {
+        var cookieMaxAge = (int) (jwtService.extractExpiration(token).getTime() - System.currentTimeMillis()) / 1000;
+        if(cookieMaxAge < 0)
+            cookieMaxAge = 0;
         Cookie refreshTokenCookie = new Cookie("refresh_token", (String) token);
         refreshTokenCookie.setHttpOnly(true);  // Prevents JavaScript access (XSS protection)
         refreshTokenCookie.setSecure(true);    // Ensures HTTPS only (important for production)
         refreshTokenCookie.setPath("/");       // Available for the entire application
-        refreshTokenCookie.setMaxAge((int) (jwtService.extractExpiration(token).getTime() - System.currentTimeMillis())/1000); // Set to the remaining TTL of the token.
+        refreshTokenCookie.setMaxAge(cookieMaxAge); // Set to the remaining TTL of the token.
         return refreshTokenCookie;
     }
 }

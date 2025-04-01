@@ -1,6 +1,5 @@
 package io.iocodes.web.components;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         var authenticationDetails = userService.authenticate(loginDto, response);
         if(authenticationDetails != null && !authenticationDetails.isEmpty()){
@@ -38,7 +37,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Refresh Token");
     }
 
-    @RequestMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
         var user = userService.register(registerDto);
         return ResponseEntity.ok(user);
