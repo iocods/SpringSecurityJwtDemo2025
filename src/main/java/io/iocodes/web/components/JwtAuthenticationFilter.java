@@ -31,11 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwtToken = request.getHeader("Authorization");
             if(jwtToken == null || context.getAuthentication() != null){
                 filterChain.doFilter(request, response);
+                logger.info("Access Token is not present in request.");
                 return;
             }
             jwtToken = jwtToken.substring(7);
             String username = jwtService.extractSubject(jwtToken);
             if(username != null && jwtService.validateToken(jwtToken) && jwtService.extractTokenType(jwtToken).equals("access_token")){
+                logger.info("Access Token is present in request.");
                 User user = (User) userDetailsService.loadUserByUsername(username);
                 var authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

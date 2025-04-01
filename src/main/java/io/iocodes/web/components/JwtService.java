@@ -9,6 +9,8 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
 
@@ -34,7 +36,7 @@ public class JwtService {
     public PublicKey generatePublicKey() {
         try {
             var keyBytes = Base64.getDecoder().decode(rsaPublicKey);
-            var publicKeySpec = new PKCS8EncodedKeySpec(keyBytes);
+            var publicKeySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             return keyFactory.generatePublic(publicKeySpec);
         } catch (Exception e) {
@@ -91,6 +93,6 @@ public class JwtService {
     }
 
     public boolean validateToken(String jwtToken) {
-        return extractExpiration(jwtToken).before(new Date());
+        return extractExpiration(jwtToken).after(new Date());
     }
 }

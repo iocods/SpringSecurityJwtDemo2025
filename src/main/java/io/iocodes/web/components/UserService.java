@@ -2,6 +2,7 @@ package io.iocodes.web.components;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -45,12 +47,14 @@ public class UserService {
 
     public void logout(HttpServletRequest request) {
         var refreshTokenCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("refresh_token")).findFirst().orElseThrow();
-        invalidateToken(request.getHeader("Authorization").substring(7));
+        var token = request.getHeader("Authorization").substring(7);
+        log.info("Token value from request: {}", token);
+        invalidateToken(token);
         invalidateToken(refreshTokenCookie.getValue());
     }
 
     private void invalidateToken(String token) {
-        long expirationTimeInMilliseconds = jwtService.extractExpiration(token.substring(7)).getTime() - System.currentTimeMillis();
+        long expirationTimeInMilliseconds = jwtService.extractExpiration(token).getTime() - System.currentTimeMillis();
         if(expirationTimeInMilliseconds > 0)
             redisService.setTokenWithTTL(token, "blacklisted", expirationTimeInMilliseconds, TimeUnit.MILLISECONDS);
     }
