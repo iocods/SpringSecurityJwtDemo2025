@@ -26,7 +26,8 @@ public class UserService {
         if(user != null) {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
             String jwtToken = jwtService.generateJwtToken(user.getUsername());
-            return Map.of("access_token", jwtToken, "user", user);
+            String refreshToken = jwtService.generateRefreshToken(user.getUsername());
+            return Map.of("access_token", jwtToken, "refresh_token", refreshToken, "user", user);
         }
         return Map.of();
     }
