@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -36,14 +38,20 @@ public class UserService {
         User user = User.builder()
             .username(registerDto.getUsername())
             .password(passwordEncoder.encode(registerDto.getPassword()))
+            .roles(List.of("ROLE_USER"))
             .build();
         return userRepository.save(user);
     }
 
     public void logout(HttpServletRequest request) {
-        String accessToken = request.getHeader("Authorization");
-        long expirationTimeInMilliseconds = jwtService.extractExpiration(accessToken.substring(7)).getTime() - System.currentTimeMillis();
+        var refreshTokenCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("refresh_token")).findFirst().orElseThrow();
+        invalidateToken(request.getHeader("Authorization").substring(7));
+        invalidateToken(refreshTokenCookie.getValue());
+    }
+
+    private void invalidateToken(String token) {
+        long expirationTimeInMilliseconds = jwtService.extractExpiration(token.substring(7)).getTime() - System.currentTimeMillis();
         if(expirationTimeInMilliseconds > 0)
-            redisService.setTokenWithTTL(accessToken, "blacklisted", expirationTimeInMilliseconds, TimeUnit.MILLISECONDS);
+            redisService.setTokenWithTTL(token, "blacklisted", expirationTimeInMilliseconds, TimeUnit.MILLISECONDS);
     }
 }

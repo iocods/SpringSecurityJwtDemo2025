@@ -30,14 +30,14 @@ public class SecurityConfig {
             .cors(AbstractHttpConfigurer::disable).sessionManagement(
                 session ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(tokenBlacklistFilter, SecurityContextHolderFilter.class)
+            .authorizeHttpRequests(auth ->
+                auth.requestMatchers("/auth/login", "/auth/register")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+            .addFilterBefore(tokenBlacklistFilter, SecurityContextHolderFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .authenticationProvider(authenticationProvider);
-        http.authorizeHttpRequests(auth ->
-            auth.requestMatchers("/auth/login", "/auth/register")
-                .permitAll()
-                .anyRequest()
-                .authenticated());
         return  http.build();
     }
 

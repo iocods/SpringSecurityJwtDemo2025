@@ -22,7 +22,7 @@ public class AuthController {
         var authenticationDetails = userService.authenticate(loginDto);
         if(authenticationDetails != null && !authenticationDetails.isEmpty()){
             var refreshToken = authenticationDetails.get("refresh_token");
-            Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+            Cookie refreshTokenCookie = new Cookie("refresh_token", (String) refreshToken);
             refreshTokenCookie.setHttpOnly(true);  // Prevents JavaScript access (XSS protection)
             refreshTokenCookie.setSecure(true);    // Ensures HTTPS only (important for production)
             refreshTokenCookie.setPath("/");       // Available for the entire application
