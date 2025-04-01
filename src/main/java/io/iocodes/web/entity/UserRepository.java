@@ -1,4 +1,4 @@
-package io.iocodes.web.components;
+package io.iocodes.web.entity;
 
 import org.springframework.data.repository.CrudRepository;
 

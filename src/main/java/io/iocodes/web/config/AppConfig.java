@@ -1,5 +1,6 @@
-package io.iocodes.web.components;
+package io.iocodes.web.config;
 
+import io.iocodes.web.entity.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

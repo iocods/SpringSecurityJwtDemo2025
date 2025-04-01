@@ -1,5 +1,9 @@
-package io.iocodes.web.components;
+package io.iocodes.web.service;
 
+import io.iocodes.web.entity.User;
+import io.iocodes.web.entity.UserRepository;
+import io.iocodes.web.dto.LoginDto;
+import io.iocodes.web.dto.RegisterDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

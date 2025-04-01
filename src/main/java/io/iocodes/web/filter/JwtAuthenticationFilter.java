@@ -1,5 +1,7 @@
-package io.iocodes.web.components;
+package io.iocodes.web.filter;
 
+import io.iocodes.web.service.JwtService;
+import io.iocodes.web.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

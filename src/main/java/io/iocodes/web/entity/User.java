@@ -1,4 +1,4 @@
-package io.iocodes.web.components;
+package io.iocodes.web.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

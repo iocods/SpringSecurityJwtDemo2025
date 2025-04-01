@@ -1,4 +1,4 @@
-package io.iocodes.web.components;
+package io.iocodes.web.entity;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Person {
+public class Customer {
     private long id;
     private String name;
     private int age;

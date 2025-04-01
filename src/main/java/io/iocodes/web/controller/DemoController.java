@@ -1,5 +1,6 @@
-package io.iocodes.web.components;
+package io.iocodes.web.controller;
 
+import io.iocodes.web.entity.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +18,10 @@ public class DemoController {
         return "Hello, Welcome to Spring security integration with JWT and Redis 2025.!";
     }
 
-    @GetMapping("/persons")
-    public List<Person> demo() {
-        Person person = Person.builder().name("John Doe").age(20).email("john@doe.com").build();
-        return List.of(person);
+    @GetMapping("/customers")
+    public List<Customer> demo() {
+        Customer customer = Customer.builder().name("John Doe").age(20).email("john@doe.com").build();
+        return List.of(customer);
     }
 
 }

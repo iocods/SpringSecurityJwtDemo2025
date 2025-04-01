@@ -1,5 +1,6 @@
-package io.iocodes.web.components;
+package io.iocodes.web.filter;
 
+import io.iocodes.web.service.RedisService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

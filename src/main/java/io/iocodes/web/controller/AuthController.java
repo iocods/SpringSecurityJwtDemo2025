@@ -1,5 +1,9 @@
-package io.iocodes.web.components;
+package io.iocodes.web.controller;
 
+import io.iocodes.web.dto.LoginDto;
+import io.iocodes.web.dto.RegisterDto;
+import io.iocodes.web.entity.User;
+import io.iocodes.web.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

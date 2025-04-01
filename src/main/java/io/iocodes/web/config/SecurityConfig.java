@@ -1,5 +1,7 @@
-package io.iocodes.web.components;
+package io.iocodes.web.config;
 
+import io.iocodes.web.filter.JwtAuthenticationFilter;
+import io.iocodes.web.filter.TokenBlacklistFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
