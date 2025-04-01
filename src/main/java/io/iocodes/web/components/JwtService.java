@@ -89,4 +89,8 @@ public class JwtService {
     public String extractTokenType(String token) {
         return (String) extractClaims(token).get("type");
     }
+
+    public boolean validateToken(String jwtToken) {
+        return extractExpiration(jwtToken).before(new Date());
+    }
 }
