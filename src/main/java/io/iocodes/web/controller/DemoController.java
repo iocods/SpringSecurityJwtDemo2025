@@ -1,10 +1,8 @@
-package io.iocodes.web.components;
+package io.iocodes.web.controller;
 
+import io.iocodes.web.entity.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +19,8 @@ public class DemoController {
     }
 
     @GetMapping("/persons")
-    public List<Person> demo() {
-        Person person = Person.builder().name("John Doe").age(20).email("john@doe.com").build();
+    public List<Customer> demo() {
+        Customer person = Customer.builder().name("John Doe").age(20).email("john@doe.com").build();
         return List.of(person);
     }
 

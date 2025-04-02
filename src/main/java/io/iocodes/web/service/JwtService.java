@@ -1,4 +1,4 @@
-package io.iocodes.web.components;
+package io.iocodes.web.service;
 
 import org.springframework.stereotype.Service;
 
