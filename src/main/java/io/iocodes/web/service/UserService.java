@@ -73,12 +73,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void logout(HttpServletRequest request) {
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
         var refreshTokenCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("refresh_token")).findFirst().orElseThrow();
         var token = request.getHeader("Authorization").substring(7);
         log.info("Token value from request: {}", token);
         invalidateToken(token);
         invalidateToken(refreshTokenCookie.getValue());
+        invalidateRefreshTokenCookie(response, refreshTokenCookie);
     }
 
     private void invalidateToken(String token) {
@@ -100,5 +101,11 @@ public class UserService {
         refreshTokenCookie.setPath("/");       // Available for the entire application
         refreshTokenCookie.setMaxAge(cookieMaxAge); // Set to the remaining TTL of the token.
         return refreshTokenCookie;
+    }
+
+    private void invalidateRefreshTokenCookie(HttpServletResponse response, Cookie refreshTokenCookie) {
+        refreshTokenCookie.setMaxAge(0);
+        refreshTokenCookie.setPath("/");
+        response.addCookie(refreshTokenCookie);
     }
 }
