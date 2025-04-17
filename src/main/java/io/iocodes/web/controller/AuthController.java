@@ -21,7 +21,7 @@ public class AuthController {
 
     private final UserService userService;
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         var authenticationDetails = userService.authenticate(loginDto, response);
         if(authenticationDetails != null && !authenticationDetails.isEmpty()){
             return ResponseEntity.ok()
